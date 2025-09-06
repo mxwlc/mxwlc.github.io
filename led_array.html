@@ -4,16 +4,22 @@
 	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 	<link rel="stylesheet" href="style/style.css">
 </head>
-<p><a href="index.html">Home</a></p>
+
 <div class="flex-container">
-	<div></div>
 	<div class="container">
+		<p><a href="index.html">Home</a></p>
 		<h1>LED Array</h1>
+		<div class="box" style="display: flex; justify-content: center; align-items: center;">
+			<h2>06/19/25</h2>
+		</div>
+		<hr>
 		<h2>Requirements</h2>
-		<p>The plan is to make a 8x8 (64) addressable LED array that can be controlled
+		<p>
+			The plan is to make a 8x8 (64) addressable LED array that can be controlled
 			over usb. The following funcionalities are required</p>
 		<ul>
-			<li>The board should be powered by a USB-C connection from a Laptop</li>
+			<li>The board should be powered by an external USB-C power supply.</li>
+			<li>The board should be controlled by a USB-C connection from a Laptop</li>
 			<li>Each individual LED should be addressable.</li>
 			<li>The user should be able to write to the array in frames.</li>
 		</ul>
@@ -24,8 +30,10 @@
 				href="https://docs.rs-online.com/f0be/A700000008421324.pdf">KAAF-5050RGBST-IC12</a> addressable LED and
 			designed a small prototype based on the application circuit.
 		</p>
+
 		<h3>Board Schematic</h3>
 		<img class="fullbleed" src="images/prototype_led_strip_sch.png">
+
 		<h3>Board PCB</h3>
 		<img class="fullbleed" src="images/prototype_led_strip_pcb.png">
 
@@ -45,13 +53,27 @@
 			<li>10-pin Debug Connector</li>
 		</ul>
 		Alongside this according to the datahseet the LEDs have a supply voltage, \(V_{DD}\), of \(5V\) with an input
-		voltage \(V_{I}\) of \(-0.5\leq V_I \leq V_{DD}+0.5\), so I felt that a level shifter is required to shift the
-		GPIO from 3v3 to 5v, looking online I found an 8-bit level shifter which shifts all 8 inputs up. Flashing will
-		be done using a 10 pin debug header for JTAG.
+		voltage \(V_{I}\) of \(-0.5\leq V_I \leq V_{DD}+0.5\), reading guidence regarding a similar led (The adafruit
+		neopixel) level shifter is required to shift the GPIO from 3v3 to 5v, looking online I found an 8-bit level
+		shifter which shifts all 8 inputs up. Flashing will be done using a 10 pin debug header for JTAG. Another
+		simlarity of most deboards I have seen is a reset button.
+		<img class="fullbleed" src="images/led_array.drawio.png">
+		<h2>Powering the MCU</h2>
+		<p>The plan to power the microcontroller is to use the 5V power supply provided by the laptop, this powers the
+			control circuit alongside keeping the LED power supply and MCU controller seperate.
 
-		<div class="box" style="display: flex; justify-content: center; align-items: center;">
-			<img width="80%" src="images/led_board_idea.jpg">
-		</div>
+		</p>
+		<h2>Powering the LED Array</h2>
+		<p>Each individual LED Statically draws \(1mA\) and draws an additional \(36mA\) when all three leds are on full
+			bright (Full white 24 Bits=\(\text{FFFFFF}_{16}\)), for an array of 64 LEDs this is
+			\[
+			\begin{align}
+			64 \times 37mA &= 2.368A
+			\end{align}
+			\]
+		</p>
+		I chose to use a <a href="https://www.digikey.co.uk/short/hcqv34fb">5V 3A powersupply</a> to fit the requirements to power the LED array with the MCU being
+		powered by a USB-C connection from a laptop.
 	</div>
 </div>
 
