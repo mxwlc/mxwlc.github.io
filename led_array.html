@@ -1,0 +1,58 @@
+<html>
+
+<head>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+	<link rel="stylesheet" href="style/style.css">
+</head>
+<p><a href="index.html">Home</a></p>
+<div class="flex-container">
+	<div></div>
+	<div class="container">
+		<h1>LED Array</h1>
+		<h2>Requirements</h2>
+		<p>The plan is to make a 8x8 (64) addressable LED array that can be controlled
+			over usb. The following funcionalities are required</p>
+		<ul>
+			<li>The board should be powered by a USB-C connection from a Laptop</li>
+			<li>Each individual LED should be addressable.</li>
+			<li>The user should be able to write to the array in frames.</li>
+		</ul>
+
+		<h2>Prototype LED Strip</h2>
+		<p>As an initial starting point I designed a small board to test some addressable
+			leds to get an initial idea of how the LEDS work. I decided on the <a
+				href="https://docs.rs-online.com/f0be/A700000008421324.pdf">KAAF-5050RGBST-IC12</a> addressable LED and
+			designed a small prototype based on the application circuit.
+		</p>
+		<h3>Board Schematic</h3>
+		<img class="fullbleed" src="images/prototype_led_strip_sch.png">
+		<h3>Board PCB</h3>
+		<img class="fullbleed" src="images/prototype_led_strip_pcb.png">
+
+		<h2>Initial Board Idea</h2>
+		<p>I decided upon the NXP KL25x series of microcontrollers to be the brains of the project, the MCU uses a
+			32-bit ARM-CortexM0 core and is 32 bit. The mcu was chosen as it fulfills the basic requirements of the
+			project and it an affordable choice. I also chose
+			this chip as I wanted to explore resource constrained systems.
+		</p>
+		<div class="box" style="display: flex; justify-content: center; align-items: center;">
+			<img width="90%" src="images/frdm-kl25x.png">
+		</div>
+		Looking at the FRDM-KL25x schematics it appears that the MCU circuit contains the follwowing parts;
+		<ul>
+			<li>Crystal</li>
+			<li>3v3 Voltage Regulator</li>
+			<li>10-pin Debug Connector</li>
+		</ul>
+		Alongside this according to the datahseet the LEDs have a supply voltage, \(V_{DD}\), of \(5V\) with an input
+		voltage \(V_{I}\) of \(-0.5\leq V_I \leq V_{DD}+0.5\), so I felt that a level shifter is required to shift the
+		GPIO from 3v3 to 5v, looking online I found an 8-bit level shifter which shifts all 8 inputs up. Flashing will
+		be done using a 10 pin debug header for JTAG.
+
+		<div class="box" style="display: flex; justify-content: center; align-items: center;">
+			<img width="80%" src="images/led_board_idea.jpg">
+		</div>
+	</div>
+</div>
+
+</html>
